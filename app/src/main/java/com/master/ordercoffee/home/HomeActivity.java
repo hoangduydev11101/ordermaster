@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 public class HomeActivity extends BaseActivity {
 
     private HomeViewPagerAdapter mAdapter;
-    
+
 
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
