@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">OrderCoffee</string>
+    <string name="s_staff">Nhân viên</string>
+    <string name="s_chef">Đầu bếp</string>
+    <string name="s_admin">Quản trị viên</string>
+</resources>
