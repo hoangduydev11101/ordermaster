@@ -31,6 +31,7 @@ public class HomeActivity extends BaseActivity {
 
     private void initViewPager() {
         mAdapter = new HomeViewPagerAdapter(this, getSupportFragmentManager());
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mAdapter);
         mTab.setupWithViewPager(mViewPager);
     }
