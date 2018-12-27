@@ -30,7 +30,7 @@
                 android:layout_toRightOf="@+id/img_food">
 
                 <TextView
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="16dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

@@ -9,6 +9,7 @@ import java.util.Map;
 public class Order implements Parcelable {
 
     public String id;
+    public int reservationId;
     public String staffId;
     public String chefId;
     public Integer[] status;
@@ -21,6 +22,7 @@ public class Order implements Parcelable {
 
     protected Order(Parcel in) {
         id = in.readString();
+        reservationId = in.readInt();
         staffId = in.readString();
         chefId = in.readString();
         totalPrice = in.readLong();
@@ -46,6 +48,7 @@ public class Order implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
+        dest.writeInt(reservationId);
         dest.writeString(staffId);
         dest.writeString(chefId);
         dest.writeLong(totalPrice);

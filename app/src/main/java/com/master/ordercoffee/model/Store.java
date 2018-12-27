@@ -9,7 +9,7 @@ public class Store implements Parcelable {
     public String ownerId;
     public String name;
     public Place place;
-    public String[] images;
+    public String image;
     public String introduce;
 
     public Store() {
@@ -20,7 +20,7 @@ public class Store implements Parcelable {
         ownerId = in.readString();
         name = in.readString();
         place = in.readParcelable(Place.class.getClassLoader());
-        images = in.createStringArray();
+        image = in.readString();
         introduce = in.readString();
     }
 
@@ -47,7 +47,7 @@ public class Store implements Parcelable {
         dest.writeString(ownerId);
         dest.writeString(name);
         dest.writeParcelable(place, flags);
-        dest.writeStringArray(images);
+        dest.writeString(image);
         dest.writeString(introduce);
     }
 }

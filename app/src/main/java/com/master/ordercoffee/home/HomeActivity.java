@@ -15,7 +15,7 @@ public class HomeActivity extends BaseActivity {
     private HomeViewPagerAdapter mAdapter;
 
 
-    @BindView(R.id.viewpager)
+    @BindView(R.id.view_pager)
     ViewPager mViewPager;
     @BindView(R.id.sliding_tabs)
     TabLayout mTab;

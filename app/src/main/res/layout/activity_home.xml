@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,21 +7,25 @@
     android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
-        app:tabIndicatorColor="@color/colorBackgroundMain"
-        app:tabTextColor="@color/colorBackgroundMain"
-        android:background="@color/colorPrimaryDark"
-        android:layout_alignParentBottom="true"
         android:id="@+id/sliding_tabs"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicatorColor="@color/colorBackgroundMain"
         app:tabMode="fixed"
-        tools:layout_editor_absoluteX="0dp" />
+        app:tabTextColor="@color/colorBackgroundMain" />
 
     <android.support.v4.view.ViewPager
-        android:layout_above="@+id/sliding_tabs"
-        android:id="@+id/viewpager"
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="0dp"
+        android:layout_above="@+id/sliding_tabs"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/sliding_tabs"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

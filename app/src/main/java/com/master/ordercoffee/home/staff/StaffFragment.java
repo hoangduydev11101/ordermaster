@@ -1,4 +1,4 @@
-package com.master.ordercoffee.home;
+package com.master.ordercoffee.home.staff;
 
 import android.content.Context;
 import android.os.Bundle;

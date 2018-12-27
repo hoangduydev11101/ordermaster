@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 import com.master.ordercoffee.R;
+import com.master.ordercoffee.home.staff.StaffFragment;
 
 public class HomeViewPagerAdapter extends FragmentPagerAdapter {
 
