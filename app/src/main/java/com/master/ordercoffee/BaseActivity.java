@@ -3,27 +3,19 @@ package com.master.ordercoffee;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
 
-public class BaseActivity extends AppCompatActivity {
+import com.master.ordercoffee.root.RootBuilder;
+import com.uber.rib.core.RibActivity;
+import com.uber.rib.core.ViewRouter;
 
+public class BaseActivity extends RibActivity {
+
+    @SuppressWarnings("unchecked")
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        super.setTheme(R.style.MainStyle);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+    protected ViewRouter<?, ?, ?> createRouter(ViewGroup parentViewGroup) {
+        RootBuilder rootBuilder = new RootBuilder(new RootBuilder.ParentComponent() {
+        });
+        return rootBuilder.build(parentViewGroup);
     }
 }
