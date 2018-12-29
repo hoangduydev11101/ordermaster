@@ -6,4 +6,5 @@
     <color name="colorBackgroundMain">#F5F5F5</color>
     <color name="colorWhite">#FFF</color>
     <color name="colorTextGray">#595959</color>
+    <color name="colorBlackTwo">#111</color>
 </resources>

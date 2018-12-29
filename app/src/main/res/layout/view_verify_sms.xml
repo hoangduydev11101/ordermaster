@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textSize="15dp"
+            android:textColor="@color/colorTextGray"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/tv_title"
+            android:text="Nhâp mã xác nhận được gửi đến số:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textSize="18dp"
+            android:textColor="@color/colorBlackTwo"
+            android:layout_marginLeft="16dp"
+            android:layout_below="@+id/tv_title"
+            android:id="@+id/tv_phone"
+            android:text="0817847849"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <EditText
+            android:visibility="visible"
+            android:inputType="number"
+            android:maxLength="6"
+            android:cursorVisible="true"
+            android:id="@+id/edt_fake"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/tv_phone"
+            android:layout_width="1dp"
+            android:layout_height="1dp" />
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tv_phone"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edt_f1"
+                android:layout_marginRight="5dp"
+                style="@style/sms_edittext_style"
+                android:layout_width="40dp"
+                android:layout_height="50dp" />
+
+            <EditText
+                style="@style/sms_edittext_style"
+                android:id="@+id/edt_f2"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="50dp" />
+
+            <EditText
+                style="@style/sms_edittext_style"
+                android:id="@+id/edt_f3"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="50dp" />
+
+            <EditText
+                style="@style/sms_edittext_style"
+                android:id="@+id/edt_f4"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="50dp" />
+
+            <EditText
+                style="@style/sms_edittext_style"
+                android:id="@+id/edt_f5"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="50dp" />
+
+            <EditText
+                style="@style/sms_edittext_style"
+                android:id="@+id/edt_f6"
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="50dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
