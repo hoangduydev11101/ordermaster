@@ -10,9 +10,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.master.ordercoffee.R;
+import com.master.ordercoffee.service.DataChangeListener;
+import com.master.ordercoffee.service.FragmentService;
+import com.master.ordercoffee.utils.KeyboardUtil;
 import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,28 +80,6 @@ public class VerifySmsView extends LinearLayout {
     private void initLoginViewModel() {
         mLoginViewModel = LoginViewModel.getInstance(mContext);
         mPhone.setText(mLoginViewModel.getCurrentPhone());
-
-        mLoginViewModel.setOnLoginModelListener(new LoginViewModel.LoginModelListener() {
-            @Override
-            public void onGetSmsCodeSuccess() {
-
-            }
-
-            @Override
-            public void onGetSmsCodeFailed(String message) {
-
-            }
-
-            @Override
-            public void onVerifySmsSuccess() {
-
-            }
-
-            @Override
-            public void onVerirySmsFailed(Exception e) {
-
-            }
-        });
     }
 
     private void initEditText() {
@@ -107,9 +91,10 @@ public class VerifySmsView extends LinearLayout {
         mFake4.setOnFocusChangeListener(focusListener);
         mFake5.setOnFocusChangeListener(focusListener);
         mFake6.setOnFocusChangeListener(focusListener);
+    }
 
-//        if (!TextUltil.stringIsNullOrEmpty(mFakeCode.getText().toString().trim()))
-//            mFakeCode.setText();
+    public void appearKeyboard() {
+        Utils.runOnUiThread(() -> setFocus(mFakeCode));
     }
 
     private void initKeyboardListener() {

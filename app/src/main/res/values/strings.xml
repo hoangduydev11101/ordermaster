@@ -3,4 +3,5 @@
     <string name="s_staff">Nhân viên</string>
     <string name="s_chef">Đầu bếp</string>
     <string name="s_admin">Quản trị viên</string>
+    <string name="todo">TODO</string>
 </resources>

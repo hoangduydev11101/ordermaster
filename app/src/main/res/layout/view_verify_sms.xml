@@ -32,6 +32,7 @@
 
 
         <EditText
+            android:digits="1234567890"
             android:visibility="visible"
             android:inputType="number"
             android:maxLength="6"

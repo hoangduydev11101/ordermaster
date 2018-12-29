@@ -56,6 +56,7 @@ dependencies {
 //    provided 'javax.annotation:jsr250-api:1.0'
 
     implementation 'org.jetbrains:annotations:15.0'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

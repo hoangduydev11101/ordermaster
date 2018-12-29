@@ -12,6 +12,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
+        android:inputType="number"
         android:id="@+id/tv_phone"
         android:textSize="18dp"
         android:text=""
@@ -46,6 +47,11 @@
     <com.master.ordercoffee.login.VerifySmsView
         android:visibility="invisible"
         android:id="@+id/v_verify"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/view_register"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -9,14 +9,19 @@ public class User implements Parcelable {
     public String id;
     public String name;
     public String avatar;
-    public int userType;
+
+    public User(boolean active, String id, String name, String avatar) {
+        this.active = active;
+        this.id = id;
+        this.name = name;
+        this.avatar = avatar;
+    }
 
     protected User(Parcel in) {
         active = in.readByte() != 0;
         id = in.readString();
         name = in.readString();
         avatar = in.readString();
-        userType = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -42,6 +47,5 @@ public class User implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(avatar);
-        dest.writeInt(userType);
     }
 }

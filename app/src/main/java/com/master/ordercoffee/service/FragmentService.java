@@ -42,7 +42,7 @@ public class FragmentService {
 
         mTransaction = mFragmentManager.beginTransaction();
         mTransaction.add(viewId, fragment);
-        mTransaction.setCustomAnimations(R.anim.anim_in_view, R.anim.anim_out_view, R.anim.anim_in_view, R.anim.anim_out_view);
+        mTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
         mTransaction.addToBackStack(tag);
         mTransaction.commit();
     }

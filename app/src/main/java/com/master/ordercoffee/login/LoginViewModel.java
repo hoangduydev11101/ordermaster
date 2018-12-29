@@ -3,9 +3,11 @@ package com.master.ordercoffee.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,22 +19,17 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.master.ordercoffee.model.User;
+import com.master.ordercoffee.service.DataChangeListener;
+import com.master.ordercoffee.service.FirebaseService;
 import com.master.ordercoffee.utils.TextUltil;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 public class LoginViewModel {
-    public interface LoginModelListener {
-        void onGetSmsCodeSuccess();
 
-        void onGetSmsCodeFailed(String message);
-
-        void onVerifySmsSuccess();
-
-        void onVerirySmsFailed(Exception e);
-    }
-
+    private String mCurrentUserId;
     private String mCurrentPhone;
     private String mCurrentCode;
     private String mCurrentVerificationId;
@@ -111,8 +108,9 @@ public class LoginViewModel {
                         super.onCodeAutoRetrievalTimeOut(s);
                         if (mListener != null) {
                             mListener.onGetSmsCodeFailed(s);
-                    };
-                }
+                        }
+                        ;
+                    }
 
 
                 });
@@ -136,8 +134,8 @@ public class LoginViewModel {
                 }
 
             }
-            if (mListener != null) {
-                mListener.onVerifySmsSuccess();
+            if (mListener != null && task != null && task.getResult().getUser() != null) {
+                mListener.onVerifySmsSuccess(task.getResult().getUser());
             }
 
         });
@@ -163,10 +161,57 @@ public class LoginViewModel {
         FirebaseAuth.getInstance().signInWithCredential(getPhoneCredential()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = task.getResult().getUser();
-
-                if (user != null) {
-
+                if (user != null && !TextUltil.stringIsNullOrEmpty(user.getUid())) {
+                    mCurrentUserId = user.getUid();
+                    if (mListener != null) {
+                        mListener.onVerifySmsSuccess(user);
+                    } else {
+                        if (mListener != null) {
+                            mListener.onVerifySmsSuccess(null);
+                        }
+                    }
+                } else {
+                    if (mListener != null) {
+                        mListener.onVerirySmsFailed(task.getException());
+                    }
                 }
+            }
+        });
+    }
+
+    public void checkExistUser(FirebaseUser user, DataChangeListener<Boolean> listener) {
+        FirebaseService.getInstance().checkUserExist(user.getUid(), new DataChangeListener<Boolean>() {
+            @Override
+            public void onDataSuccess(Boolean data) {
+                super.onDataSuccess(data);
+                if (data) {
+                    listener.onDataSuccess(true);
+                } else {
+                    listener.onDataSuccess(false);
+                }
+            }
+
+            @Override
+            public void onDataFailed(Exception e) {
+                super.onDataFailed(e);
+                listener.onDataFailed(e);
+            }
+        });
+    }
+
+    public void registerUser (String name, String email, String avatar) {
+        User user = new User(true, mCurrentUserId, name, avatar);
+        FirebaseService.getInstance().registerUser(user, new DataChangeListener<Boolean>() {
+            @Override
+            public void onDataSuccess(Boolean data) {
+                super.onDataSuccess(data);
+                Toast.makeText(mContext, "register success", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDataFailed(Exception e) {
+                super.onDataFailed(e);
+                Toast.makeText(mContext, "register failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

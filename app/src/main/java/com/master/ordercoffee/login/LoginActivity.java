@@ -6,10 +6,16 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.j2objc.annotations.ObjectiveCName;
 import com.master.ordercoffee.BaseActivity;
 import com.master.ordercoffee.R;
+import com.master.ordercoffee.service.DataChangeListener;
+import com.master.ordercoffee.service.FragmentService;
+import com.master.ordercoffee.utils.AnimationUtil;
+import com.master.ordercoffee.utils.KeyboardUtil;
 import com.master.ordercoffee.utils.TextUltil;
 import com.master.ordercoffee.utils.Utils;
 
@@ -41,65 +47,69 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         initLoginViewModel();
-    }
-
-    private Animation mSlideIn, mSlideOut;
-    private void showVerifiSmsCode () {
-        if (mSlideIn == null)
-            mSlideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
-        if (mSlideOut == null)
-            mSlideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
-
-        if (mViewVerify.getVisibility() != View.VISIBLE) {
-            mViewVerify.startAnimation(mSlideIn);
-            Utils.runOnUiThread(() -> {
-                mViewVerify.setVisibility(View.VISIBLE);
-            }, 250);
-        }
-    }
-
-    private void hideVerifiSmsCode () {
-        if (mSlideIn == null)
-            mSlideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
-        if (mSlideOut == null)
-            mSlideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
-
-        if (mViewVerify.getVisibility() == View.VISIBLE) {
-            mViewVerify.startAnimation(mSlideOut);
-            Utils.runOnUiThread(() -> {
-                mViewVerify.setVisibility(View.INVISIBLE);
-            }, 250);
-        }
+        mPhone.requestFocus();
+        KeyboardUtil.appear(mPhone, this);
     }
 
     private void initLoginViewModel() {
         mLoginViewModel = LoginViewModel.getInstance(this);
 
-        mLoginViewModel.setOnLoginModelListener(new LoginViewModel.LoginModelListener() {
+        mLoginViewModel.setOnLoginModelListener(new LoginModelListener() {
             @Override
             public void onGetSmsCodeSuccess() {
-                showVerifiSmsCode();
+                super.onGetSmsCodeSuccess();
+                AnimationUtil.showView(LoginActivity.this, mViewVerify);
+                mViewVerify.appearKeyboard();
             }
 
             @Override
             public void onGetSmsCodeFailed(String message) {
-
+                super.onGetSmsCodeFailed(message);
+                // TODO show meesage error
             }
 
             @Override
-            public void onVerifySmsSuccess() {
+            public void onVerifySmsSuccess(FirebaseUser firebaseUser) {
+                super.onVerifySmsSuccess(firebaseUser);
+                if (firebaseUser != null) {
+                    mLoginViewModel.checkExistUser(firebaseUser, new DataChangeListener<Boolean>() {
+                        @Override
+                        public void onDataSuccess(Boolean data) {
+                            super.onDataSuccess(data);
+                            if (data) {
+                                // TODO main view
+                            } else {
+                                Utils.runOnUiThread(() -> {
+                                    FragmentService.getInstance(LoginActivity.this).pushFragment(R.id.view_register, new RegisterFragment(), "register");
+                                });
 
+                            }
+                        }
+
+                        @Override
+                        public void onDataFailed(Exception e) {
+                            super.onDataFailed(e);
+                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
 
             @Override
             public void onVerirySmsFailed(Exception e) {
-
+                super.onVerirySmsFailed(e);
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public void onBackPressed() {
-        hideVerifiSmsCode();
+        if (mViewVerify.getVisibility() == View.VISIBLE) {
+            AnimationUtil.hideView(LoginActivity.this, mViewVerify);
+            return;
+        }
+
+        super.onBackPressed();
     }
 }
