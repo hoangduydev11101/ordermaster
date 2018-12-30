@@ -19,9 +19,12 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.master.ordercoffee.main.MainActivity;
 import com.master.ordercoffee.model.User;
 import com.master.ordercoffee.service.DataChangeListener;
 import com.master.ordercoffee.service.FirebaseService;
+import com.master.ordercoffee.service.NavigationService;
+import com.master.ordercoffee.service.UserService;
 import com.master.ordercoffee.utils.TextUltil;
 
 import java.util.concurrent.Executor;
@@ -65,9 +68,8 @@ public class LoginViewModel {
     }
 
     public void getSmsCode() {
-        final String phone = String.format("%s%s", "+84", mCurrentPhone);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phone,
+                mCurrentPhone,
                 30,
                 TimeUnit.SECONDS,
                 (Activity) mContext,
@@ -179,15 +181,15 @@ public class LoginViewModel {
         });
     }
 
-    public void checkExistUser(FirebaseUser user, DataChangeListener<Boolean> listener) {
-        FirebaseService.getInstance().checkUserExist(user.getUid(), new DataChangeListener<Boolean>() {
+    public void checkExistUser(FirebaseUser user, DataChangeListener<User> listener) {
+        FirebaseService.getInstance().checkUserExist(user.getUid(), new DataChangeListener<User>() {
             @Override
-            public void onDataSuccess(Boolean data) {
+            public void onDataSuccess(User data) {
                 super.onDataSuccess(data);
-                if (data) {
-                    listener.onDataSuccess(true);
+                if (data != null) {
+                    listener.onDataSuccess(data);
                 } else {
-                    listener.onDataSuccess(false);
+                    listener.onDataSuccess(null);
                 }
             }
 
@@ -200,12 +202,14 @@ public class LoginViewModel {
     }
 
     public void registerUser (String name, String email, String avatar) {
-        User user = new User(true, mCurrentUserId, name, avatar);
+        User user = new User(true, mCurrentUserId, name, mCurrentPhone, avatar, email);
         FirebaseService.getInstance().registerUser(user, new DataChangeListener<Boolean>() {
             @Override
             public void onDataSuccess(Boolean data) {
                 super.onDataSuccess(data);
                 Toast.makeText(mContext, "register success", Toast.LENGTH_SHORT).show();
+                UserService.saveCurrentUser(mContext, user);
+                NavigationService.goIntoView(mContext, MainActivity.class);
             }
 
             @Override

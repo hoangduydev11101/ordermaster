@@ -1,27 +1,33 @@
 package com.master.ordercoffee.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.j2objc.annotations.ObjectiveCName;
 import com.master.ordercoffee.BaseActivity;
+import com.master.ordercoffee.PickImageActivity;
 import com.master.ordercoffee.R;
+import com.master.ordercoffee.main.MainActivity;
+import com.master.ordercoffee.model.User;
 import com.master.ordercoffee.service.DataChangeListener;
 import com.master.ordercoffee.service.FragmentService;
+import com.master.ordercoffee.service.NavigationService;
+import com.master.ordercoffee.service.UserService;
 import com.master.ordercoffee.utils.AnimationUtil;
 import com.master.ordercoffee.utils.KeyboardUtil;
+import com.master.ordercoffee.utils.PhoneUtil;
 import com.master.ordercoffee.utils.TextUltil;
 import com.master.ordercoffee.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.master.ordercoffee.utils.Constants.Requests.REQUEST_IMAGE_FOR_AVATAR;
 
 public class LoginActivity extends BaseActivity {
 
@@ -34,10 +40,13 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.img_next)
     void onNextClicked() {
-        if (!TextUltil.stringIsNullOrEmpty(mPhone.getText().toString().trim())) {
-            mLoginViewModel.setCurrentPhone(mPhone.getText().toString().trim());
-            mLoginViewModel.getSmsCode();
+        String phone = mPhone.getText().toString().trim();
+        if (!PhoneUtil.isPhoneCorrectFormat(phone, this)) {
+            Toast.makeText(this, "Số điện thoại chưa hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
         }
+        mLoginViewModel.setCurrentPhone(PhoneUtil.formatPhone(phone));
+        mLoginViewModel.getSmsCode();
     }
 
     @Override
@@ -46,11 +55,23 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        initLoginViewModel();
-        mPhone.requestFocus();
-        KeyboardUtil.appear(mPhone, this);
+        checkUserLoggedIn();
     }
 
+    private void checkUserLoggedIn() {
+        User user = UserService.getCurerntUser(this);
+        if (UserService.isUserAvailable(user)) {
+            goMainView();
+        } else {
+            initLoginViewModel();
+            mPhone.requestFocus();
+            KeyboardUtil.appear(mPhone, this);
+        }
+    }
+
+    private void goMainView() {
+        NavigationService.goIntoView(this, MainActivity.class);
+    }
     private void initLoginViewModel() {
         mLoginViewModel = LoginViewModel.getInstance(this);
 
@@ -72,12 +93,13 @@ public class LoginActivity extends BaseActivity {
             public void onVerifySmsSuccess(FirebaseUser firebaseUser) {
                 super.onVerifySmsSuccess(firebaseUser);
                 if (firebaseUser != null) {
-                    mLoginViewModel.checkExistUser(firebaseUser, new DataChangeListener<Boolean>() {
+                    mLoginViewModel.checkExistUser(firebaseUser, new DataChangeListener<User>() {
                         @Override
-                        public void onDataSuccess(Boolean data) {
+                        public void onDataSuccess(User data) {
                             super.onDataSuccess(data);
-                            if (data) {
-                                // TODO main view
+                            if (data != null) {
+                                UserService.saveCurrentUser(LoginActivity.this, data);
+                                goMainView();
                             } else {
                                 Utils.runOnUiThread(() -> {
                                     FragmentService.getInstance(LoginActivity.this).pushFragment(R.id.view_register, new RegisterFragment(), "register");

@@ -21,6 +21,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    repositories {
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
+
+        maven {
+            url 'https://jitpack.io'
+        }
+        google()
+    }
 }
 
 dependencies {
@@ -41,9 +51,11 @@ dependencies {
     implementation "info.android15.solid:streams:$solidVersion"
     implementation "info.android15.solid:collections:$solidVersion"
 
+    // firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-firestore:17.1.5'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
 
     implementation 'io.michaelrocks:libphonenumber-android:8.9.14'
 
@@ -57,6 +69,10 @@ dependencies {
 
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    implementation 'com.adamstyrc.cookiecutter:cookie-cutter:1.0.2'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+    implementation 'com.google.code.gson:gson:2.8.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
