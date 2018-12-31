@@ -17,6 +17,7 @@ import com.master.ordercoffee.R;
 import com.master.ordercoffee.service.DataChangeListener;
 import com.master.ordercoffee.service.FragmentService;
 import com.master.ordercoffee.utils.KeyboardUtil;
+import com.master.ordercoffee.utils.Loader;
 import com.master.ordercoffee.utils.TextUltil;
 import com.master.ordercoffee.utils.Utils;
 
@@ -152,6 +153,7 @@ public class VerifySmsView extends LinearLayout {
                     }
                 }
                 if (mFakeCode.length() == 6) {
+                    Loader.start(mContext);
                     mLoginViewModel.setCurrentCode(mFakeCode.getText().toString().trim());
                     mLoginViewModel.signInWithPhoneAuthCredential();
                 }

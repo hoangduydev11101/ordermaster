@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.master.ordercoffee.model.Invitation;
 import com.master.ordercoffee.model.Order;
 import com.master.ordercoffee.model.Reservation;
 import com.master.ordercoffee.model.Store;
@@ -65,7 +66,7 @@ public class FirebaseService {
         if (mDatabase == null)
             mDatabase = FirebaseFirestore.getInstance();
 
-        mDatabase.collection("Store")
+        mDatabase.collection("Stores")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task != null && task.isSuccessful()) {
@@ -102,7 +103,7 @@ public class FirebaseService {
         }
     }
 
-    public void checkUserExist(String userId, DataChangeListener<User> listener) {
+    public void getCurrentUser(String userId, DataChangeListener<User> listener) {
         DocumentReference reference = mDatabase.collection("Users").document(userId);
         reference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -141,6 +142,16 @@ public class FirebaseService {
                 callback.onUploadSuccess(task.getResult().toString());
             } else {
                 callback.onUploadImageFailed();
+            }
+        });
+    }
+
+    public void createInvitation(Invitation invitation, DataChangeListener<Boolean> listener) {
+        mDatabase.collection("Invitations").document(invitation.storeId).set(invitation).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                listener.onDataSuccess(true);
+            } else {
+                listener.onDataFailed(task.getException());
             }
         });
     }

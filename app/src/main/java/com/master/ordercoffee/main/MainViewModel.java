@@ -2,9 +2,12 @@ package com.master.ordercoffee.main;
 
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.master.ordercoffee.model.Store;
+import com.master.ordercoffee.model.User;
 import com.master.ordercoffee.service.DataChangeListener;
 import com.master.ordercoffee.service.FirebaseService;
+import com.master.ordercoffee.service.UserService;
 
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class MainViewModel {
     private static MainViewModel instance = null;
     private static Context mContext;
     private DataChangeListener<Store> mListner;
+    private User mCurrentUser;
 
     public static MainViewModel getInstance(Context context) {
         mContext = context;
@@ -50,5 +54,29 @@ public class MainViewModel {
                 }
             }
         });
+    }
+
+    public void getDataUser(DataChangeListener<User> listener) {
+        if (mCurrentUser == null) {
+            mCurrentUser = UserService.getCurrentUser(mContext);
+        }
+
+        if (mCurrentUser != null) {
+            listener.onDataSuccess(mCurrentUser);
+        } else {
+            String uId = FirebaseAuth.getInstance().getUid();
+            FirebaseService.getInstance().getCurrentUser(uId, new DataChangeListener<User>() {
+                @Override
+                public void onDataSuccess(User data) {
+                    super.onDataSuccess(data);
+                    if (UserService.isUserAvailable(data)) {
+                        listener.onDataSuccess(data);
+                    } else {
+                        listener.onDataSuccess(null);
+                    }
+                }
+
+            });
+        }
     }
 }

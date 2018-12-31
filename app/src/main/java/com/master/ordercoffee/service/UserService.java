@@ -24,7 +24,7 @@ public class UserService {
         }
     }
 
-    public static User getCurerntUser(Context context) {
+    public static User getCurrentUser(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_CACHE, Context.MODE_PRIVATE);
         String userStr = sharedPreferences.getString(KEY_USER, null);
         if (!TextUltil.stringIsNullOrEmpty(userStr)) {

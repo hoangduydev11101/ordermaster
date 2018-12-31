@@ -19,10 +19,23 @@ public class BaseActivity extends AppCompatActivity {
 //        return rootBuilder.build(parentViewGroup);
 //    }
 
+    protected boolean isActive;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setTheme(R.style.MainStyle);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActive = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isActive = true;
     }
 }

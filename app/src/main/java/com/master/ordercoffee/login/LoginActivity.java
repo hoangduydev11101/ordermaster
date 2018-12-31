@@ -1,6 +1,5 @@
 package com.master.ordercoffee.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.master.ordercoffee.BaseActivity;
-import com.master.ordercoffee.PickImageActivity;
 import com.master.ordercoffee.R;
 import com.master.ordercoffee.main.MainActivity;
 import com.master.ordercoffee.model.User;
@@ -19,15 +17,13 @@ import com.master.ordercoffee.service.NavigationService;
 import com.master.ordercoffee.service.UserService;
 import com.master.ordercoffee.utils.AnimationUtil;
 import com.master.ordercoffee.utils.KeyboardUtil;
+import com.master.ordercoffee.utils.Loader;
 import com.master.ordercoffee.utils.PhoneUtil;
-import com.master.ordercoffee.utils.TextUltil;
 import com.master.ordercoffee.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.master.ordercoffee.utils.Constants.Requests.REQUEST_IMAGE_FOR_AVATAR;
 
 public class LoginActivity extends BaseActivity {
 
@@ -59,7 +55,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void checkUserLoggedIn() {
-        User user = UserService.getCurerntUser(this);
+        User user = UserService.getCurrentUser(this);
         if (UserService.isUserAvailable(user)) {
             goMainView();
         } else {
@@ -86,7 +82,8 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onGetSmsCodeFailed(String message) {
                 super.onGetSmsCodeFailed(message);
-                // TODO show meesage error
+                Loader.stop(LoginActivity.this);
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -97,6 +94,7 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onDataSuccess(User data) {
                             super.onDataSuccess(data);
+                            Loader.stop(LoginActivity.this);
                             if (data != null) {
                                 UserService.saveCurrentUser(LoginActivity.this, data);
                                 goMainView();
@@ -111,6 +109,7 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onDataFailed(Exception e) {
                             super.onDataFailed(e);
+                            Loader.stop(LoginActivity.this);
                             Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -120,6 +119,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onVerirySmsFailed(Exception e) {
                 super.onVerirySmsFailed(e);
+                Loader.stop(LoginActivity.this);
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

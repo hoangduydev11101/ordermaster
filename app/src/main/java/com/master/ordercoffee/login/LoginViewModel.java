@@ -3,19 +3,10 @@ package com.master.ordercoffee.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -25,9 +16,9 @@ import com.master.ordercoffee.service.DataChangeListener;
 import com.master.ordercoffee.service.FirebaseService;
 import com.master.ordercoffee.service.NavigationService;
 import com.master.ordercoffee.service.UserService;
+import com.master.ordercoffee.utils.Loader;
 import com.master.ordercoffee.utils.TextUltil;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 public class LoginViewModel {
@@ -68,6 +59,7 @@ public class LoginViewModel {
     }
 
     public void getSmsCode() {
+        Loader.start(mContext);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 mCurrentPhone,
                 30,
@@ -79,16 +71,13 @@ public class LoginViewModel {
                         mCurrentCode = phoneAuthCredential.getSmsCode();
                         if (!TextUltil.stringIsNullOrEmpty(mCurrentCode)) {
                             phoneAuthSignIn(phoneAuthCredential);
-                        } else {
-//                            if (mListener != null) {
-//                                mListener.onGetSmsCodeFailed("");
-//                            }
                         }
 
                     }
 
                     @Override
                     public void onVerificationFailed(FirebaseException e) {
+                        Loader.stop(mContext);
                         if (mListener != null) {
                             mListener.onVerirySmsFailed(e);
                         }
@@ -96,6 +85,7 @@ public class LoginViewModel {
 
                     @Override
                     public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        Loader.stop(mContext);
                         mCurrentVerificationId = verificationId;
                         mCurrentToken = token;
                         savePhoneVerificationID(mCurrentVerificationId);
@@ -107,11 +97,11 @@ public class LoginViewModel {
                     /* This one is also called */
                     @Override
                     public void onCodeAutoRetrievalTimeOut(String s) {
+                        Loader.stop(mContext);
                         super.onCodeAutoRetrievalTimeOut(s);
                         if (mListener != null) {
-                            mListener.onGetSmsCodeFailed(s);
+                            mListener.onGetSmsCodeSuccess();
                         }
-                        ;
                     }
 
 
@@ -130,6 +120,7 @@ public class LoginViewModel {
 
         FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.getException() != null) {
+                Loader.stop(mContext);
                 if (mListener != null) {
                     mListener.onVerirySmsFailed(task.getException());
                     return;
@@ -137,6 +128,7 @@ public class LoginViewModel {
 
             }
             if (mListener != null && task != null && task.getResult().getUser() != null) {
+                Loader.stop(mContext);
                 mListener.onVerifySmsSuccess(task.getResult().getUser());
             }
 
@@ -177,12 +169,14 @@ public class LoginViewModel {
                         mListener.onVerirySmsFailed(task.getException());
                     }
                 }
+            } else {
+                mListener.onVerirySmsFailed(task.getException());
             }
         });
     }
 
     public void checkExistUser(FirebaseUser user, DataChangeListener<User> listener) {
-        FirebaseService.getInstance().checkUserExist(user.getUid(), new DataChangeListener<User>() {
+        FirebaseService.getInstance().getCurrentUser(user.getUid(), new DataChangeListener<User>() {
             @Override
             public void onDataSuccess(User data) {
                 super.onDataSuccess(data);
@@ -196,16 +190,19 @@ public class LoginViewModel {
             @Override
             public void onDataFailed(Exception e) {
                 super.onDataFailed(e);
+                Loader.stop(mContext);
                 listener.onDataFailed(e);
             }
         });
     }
 
     public void registerUser (String name, String email, String avatar) {
+        Loader.start(mContext);
         User user = new User(true, mCurrentUserId, name, mCurrentPhone, avatar, email);
         FirebaseService.getInstance().registerUser(user, new DataChangeListener<Boolean>() {
             @Override
             public void onDataSuccess(Boolean data) {
+                Loader.stop(mContext);
                 super.onDataSuccess(data);
                 Toast.makeText(mContext, "register success", Toast.LENGTH_SHORT).show();
                 UserService.saveCurrentUser(mContext, user);
@@ -214,6 +211,7 @@ public class LoginViewModel {
 
             @Override
             public void onDataFailed(Exception e) {
+                Loader.stop(mContext);
                 super.onDataFailed(e);
                 Toast.makeText(mContext, "register failed", Toast.LENGTH_SHORT).show();
             }
