@@ -36,6 +36,12 @@ public class UserService {
         return null;
     }
 
+    public static void clearCurrentUser(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_CACHE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_USER);
+    }
+
     public static boolean isUserAvailable(User user) {
         return user != null && !TextUltil.stringIsNullOrEmpty(user.id);
     }

@@ -10,20 +10,21 @@ public class Invitation implements Parcelable {
 
     public String storeId;
     public String ownerId;
-    public Map<Integer, String> userInvitedId = new HashMap<>();
+    public int jobs;
 
     public Invitation() {
     }
 
-    public Invitation(String storeId, String ownerId, Map<Integer, String> userInvitedId) {
+    public Invitation(String storeId, String ownerId, int jobs) {
         this.storeId = storeId;
         this.ownerId = ownerId;
-        this.userInvitedId = userInvitedId;
+        this.jobs = jobs;
     }
 
     protected Invitation(Parcel in) {
         storeId = in.readString();
         ownerId = in.readString();
+        jobs = in.readInt();
     }
 
     public static final Creator<Invitation> CREATOR = new Creator<Invitation>() {
@@ -47,5 +48,6 @@ public class Invitation implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(storeId);
         dest.writeString(ownerId);
+        dest.writeInt(jobs);
     }
 }

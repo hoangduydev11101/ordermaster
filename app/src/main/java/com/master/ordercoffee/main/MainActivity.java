@@ -16,7 +16,9 @@ import com.master.ordercoffee.model.Store;
 import com.master.ordercoffee.model.User;
 import com.master.ordercoffee.service.DataChangeListener;
 import com.master.ordercoffee.service.FragmentService;
+import com.master.ordercoffee.utils.AnimationUtil;
 import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.TimeUtil;
 import com.master.ordercoffee.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +33,8 @@ public class MainActivity extends BaseActivity {
 
     private ListStoreAdapter mAdapter;
     private MainViewModel mMainViewModel;
+    private boolean isExtraShowing;
+    private long mLastClicked;
 
     @BindView(R.id.ry_list_store)
     RecyclerView mViewStore;
@@ -38,7 +42,21 @@ public class MainActivity extends BaseActivity {
     CircleImageView mAvatar;
     @BindView(R.id.tv_name)
     TextView mName;
+    @BindView(R.id.v_extra)
+    ExtraView mExtraView;
 
+    @OnClick(R.id.img_avatar)
+    void avatarClicked() {
+        if (mLastClicked != 0 && mLastClicked + 1000 > TimeUtil.currentTimeStamp())
+            return;
+
+        if (!isExtraShowing) {
+            AnimationUtil.showView(this, mExtraView, AnimationUtil.ToGravity.SCALE);
+        } else {
+            AnimationUtil.hideView(this, mExtraView, AnimationUtil.ToGravity.SCALE);
+        }
+        isExtraShowing = !isExtraShowing;
+    }
 
     @OnClick(R.id.tv_add_store)
     void onAddStoreClicked() {
@@ -127,4 +145,5 @@ public class MainActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
     }
+
 }
