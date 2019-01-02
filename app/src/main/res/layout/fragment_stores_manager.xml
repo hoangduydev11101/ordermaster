@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:background="@color/colorWhite"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,41 +8,31 @@
 
     <com.master.ordercoffee.utils.Toolbar
         app:tb_lable="Cửa hàng của bạn"
-        android:id="@+id/toolbar"
+        android:id="@+id/v_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_above="@+id/tv_add_store"
-        android:layout_below="@+id/toolbar"
-        android:id="@+id/ry_list_store"
+        android:layout_above="@+id/add_store"
+        android:layout_below="@+id/v_toolbar"
+        android:id="@+id/ist_store"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp" />
 
     <TextView
-        android:layout_alignParentBottom="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:id="@+id/tv_add_store"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_primary"
-        android:gravity="center"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="8dp"
-        android:text="Thêm cửa hàng của bạn"
+        android:layout_margin="15dp"
         android:textColor="@color/colorWhite"
-        />
-
-    <FrameLayout
-        android:id="@+id/view_add_store"
+        android:background="@drawable/bg_primary"
+        android:text="Thêm cửa hàng"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/add_store"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content" />
+
 
 </RelativeLayout>
