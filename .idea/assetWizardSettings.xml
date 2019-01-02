@@ -15,9 +15,9 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="height" value="100" />
-                            <entry key="outputName" value="ic_user_register" />
+                            <entry key="outputName" value="ic_close_view" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/user.svg" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/cancel-music.svg" />
                             <entry key="width" value="100" />
                           </map>
                         </option>

@@ -14,7 +14,7 @@ import android.widget.EditText;
 import com.master.ordercoffee.PickImageActivity;
 import com.master.ordercoffee.R;
 import com.master.ordercoffee.utils.Constants;
-import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.TextUtil;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -70,7 +70,7 @@ public class RegisterFragment extends Fragment {
         if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_FOR_AVATAR) {
          if (data != null) {
              String imageUrl = data.getStringExtra(Constants.Keys.kImageUrl);
-             if (!TextUltil.stringIsNullOrEmpty(imageUrl)) {
+             if (!TextUtil.stringIsNullOrEmpty(imageUrl)) {
                  mImageUrl = imageUrl;
                  Picasso.get().load(imageUrl).placeholder(R.drawable.ic_avatar_holder).into(mAvatar);
              }

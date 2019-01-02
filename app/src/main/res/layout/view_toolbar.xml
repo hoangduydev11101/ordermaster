@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp">
+
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:padding="13dp"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_close_view"/>
+
+    <ImageView
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/img_action"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="2dp"
+        android:padding="13dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_close_view"/>
+
+    <TextView
+        android:layout_centerInParent="true"
+        android:id="@+id/tv_lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Master Manager"
+        android:textColor="@color/colorWhite"
+        android:textSize="15sp" />
+</RelativeLayout>

@@ -17,7 +17,7 @@ import com.master.ordercoffee.service.FirebaseService;
 import com.master.ordercoffee.service.NavigationService;
 import com.master.ordercoffee.service.UserService;
 import com.master.ordercoffee.utils.Loader;
-import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.TextUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -69,7 +69,7 @@ public class LoginViewModel {
                     @Override
                     public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                         mCurrentCode = phoneAuthCredential.getSmsCode();
-                        if (!TextUltil.stringIsNullOrEmpty(mCurrentCode)) {
+                        if (!TextUtil.stringIsNullOrEmpty(mCurrentCode)) {
                             phoneAuthSignIn(phoneAuthCredential);
                         }
 
@@ -142,7 +142,7 @@ public class LoginViewModel {
     }
 
     private String getPhoneVericationID() {
-        if (!TextUltil.stringIsNullOrEmpty(mCurrentVerificationId))
+        if (!TextUtil.stringIsNullOrEmpty(mCurrentVerificationId))
             return mCurrentVerificationId;
 
         SharedPreferences sharedPref = mContext.getSharedPreferences("Phone auth", Context.MODE_PRIVATE);
@@ -155,7 +155,7 @@ public class LoginViewModel {
         FirebaseAuth.getInstance().signInWithCredential(getPhoneCredential()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = task.getResult().getUser();
-                if (user != null && !TextUltil.stringIsNullOrEmpty(user.getUid())) {
+                if (user != null && !TextUtil.stringIsNullOrEmpty(user.getUid())) {
                     mCurrentUserId = user.getUid();
                     if (mListener != null) {
                         mListener.onVerifySmsSuccess(user);

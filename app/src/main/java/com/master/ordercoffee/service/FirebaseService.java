@@ -2,22 +2,11 @@ package com.master.ordercoffee.service;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -26,19 +15,12 @@ import com.master.ordercoffee.model.Order;
 import com.master.ordercoffee.model.Reservation;
 import com.master.ordercoffee.model.Store;
 import com.master.ordercoffee.model.User;
-import com.master.ordercoffee.utils.Logger;
-import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.TextUtil;
 import com.master.ordercoffee.utils.TimeUtil;
-import com.master.ordercoffee.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nullable;
-
-import static android.content.ContentValues.TAG;
-import static com.master.ordercoffee.utils.Constants.PROJECT_ID;
 
 public class FirebaseService {
 
@@ -108,7 +90,7 @@ public class FirebaseService {
         reference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 User user = task.getResult().toObject(User.class);
-                if (user != null && !TextUltil.stringIsNullOrEmpty(user.id)) {
+                if (user != null && !TextUtil.stringIsNullOrEmpty(user.id)) {
                     listener.onDataSuccess(user);
                 } else {
                     listener.onDataSuccess(null);
@@ -122,7 +104,7 @@ public class FirebaseService {
     public void uploadImages(Bitmap bitmap, String path, final FirebaseStorageListener callback) {
         mStorage = FirebaseStorage.getInstance();
 
-        if (TextUltil.stringIsNullOrEmpty(path))
+        if (TextUtil.stringIsNullOrEmpty(path))
             path = String.format("images/image_%s.png", TimeUtil.currentTimeStamp());
 
         StorageReference storageRef = mStorage.getReference().child(path);

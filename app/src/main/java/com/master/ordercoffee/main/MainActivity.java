@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.google.j2objc.annotations.ObjectiveCName;
 import com.master.ordercoffee.BaseActivity;
 import com.master.ordercoffee.R;
 import com.master.ordercoffee.home.HomeActivity;
@@ -17,7 +17,7 @@ import com.master.ordercoffee.model.User;
 import com.master.ordercoffee.service.DataChangeListener;
 import com.master.ordercoffee.service.FragmentService;
 import com.master.ordercoffee.utils.AnimationUtil;
-import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.TextUtil;
 import com.master.ordercoffee.utils.TimeUtil;
 import com.master.ordercoffee.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -58,10 +58,7 @@ public class MainActivity extends BaseActivity {
         isExtraShowing = !isExtraShowing;
     }
 
-    @OnClick(R.id.tv_add_store)
-    void onAddStoreClicked() {
-        FragmentService.getInstance(this).pushFragment(R.id.view_add_store, new AddStoreFragment(), "add-store");
-    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +69,21 @@ public class MainActivity extends BaseActivity {
         initAdapter();
         initMainViewModel();
         loadInfoUser();
+        initExtraView();
+    }
+
+    private void initExtraView() {
+        mExtraView.setOnExtraviewListener(new ExtraView.ExtraViewListener() {
+            @Override
+            public void onMyStoreClicked() {
+                FragmentService.getInstance(MainActivity.this).pushFragment(R.id.view_store_manager, new StoresManagerFragment(), "manager-store");
+            }
+
+            @Override
+            public void onLogoutClicked() {
+                mMainViewModel.signOut();
+            }
+        });
     }
 
     private void initAdapter() {
@@ -100,10 +112,10 @@ public class MainActivity extends BaseActivity {
             public void onDataSuccess(User data) {
                 super.onDataSuccess(data);
                 Utils.runOnUiThread(() -> {
-                    if (!TextUltil.stringIsNullOrEmpty(data.avatar)) {
+                    if (!TextUtil.stringIsNullOrEmpty(data.avatar)) {
                         Picasso.get().load(data.avatar).placeholder(R.drawable.ic_avatar_holder).error(R.drawable.ic_avatar_holder).into(mAvatar);
                     }
-                    if (!TextUltil.stringIsNullOrEmpty(data.name)) {
+                    if (!TextUtil.stringIsNullOrEmpty(data.name)) {
                         mName.setText(data.name);
                     }
                 });

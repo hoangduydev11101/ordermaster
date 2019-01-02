@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.master.ordercoffee.model.User;
-import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.TextUtil;
 
 public class UserService {
 
@@ -17,7 +17,7 @@ public class UserService {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (user != null) {
             String data = new Gson().toJson(user);
-            if (!TextUltil.stringIsNullOrEmpty(data)) {
+            if (!TextUtil.stringIsNullOrEmpty(data)) {
                 editor.putString(KEY_USER, data);
                 editor.apply();
             }
@@ -27,9 +27,9 @@ public class UserService {
     public static User getCurrentUser(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(KEY_CACHE, Context.MODE_PRIVATE);
         String userStr = sharedPreferences.getString(KEY_USER, null);
-        if (!TextUltil.stringIsNullOrEmpty(userStr)) {
+        if (!TextUtil.stringIsNullOrEmpty(userStr)) {
             User user = new Gson().fromJson(userStr, User.class);
-            if (user != null && !TextUltil.stringIsNullOrEmpty(user.id)) {
+            if (user != null && !TextUtil.stringIsNullOrEmpty(user.id)) {
                 return user;
             }
         }
@@ -43,6 +43,6 @@ public class UserService {
     }
 
     public static boolean isUserAvailable(User user) {
-        return user != null && !TextUltil.stringIsNullOrEmpty(user.id);
+        return user != null && !TextUtil.stringIsNullOrEmpty(user.id);
     }
 }

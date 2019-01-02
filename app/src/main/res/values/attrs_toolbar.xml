@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ToolbarView">
+        <attr name="tb_lable" format="string"/>
+        <attr name="tb_lableColor" format="color|reference"/>
+        <attr name="tb_background" format="color|reference"/>
+        <attr name="tb_iconClose" format="color|reference"/>
+        <attr name="tb_iconAction" format="color|reference"/>
+        <attr name="tb_action_finish" format="boolean"/>
+    </declare-styleable>
+</resources>

@@ -79,4 +79,9 @@ public class MainViewModel {
             });
         }
     }
+
+    public void signOut() {
+        UserService.clearCurrentUser(mContext);
+        FirebaseAuth.getInstance().signOut();
+    }
 }

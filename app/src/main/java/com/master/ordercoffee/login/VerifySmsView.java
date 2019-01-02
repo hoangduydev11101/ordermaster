@@ -10,15 +10,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.master.ordercoffee.R;
-import com.master.ordercoffee.service.DataChangeListener;
-import com.master.ordercoffee.service.FragmentService;
-import com.master.ordercoffee.utils.KeyboardUtil;
 import com.master.ordercoffee.utils.Loader;
-import com.master.ordercoffee.utils.TextUltil;
 import com.master.ordercoffee.utils.Utils;
 
 import butterknife.BindView;

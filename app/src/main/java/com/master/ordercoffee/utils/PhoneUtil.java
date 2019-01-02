@@ -10,7 +10,7 @@ public class PhoneUtil {
     private static PhoneNumberUtil phoneNumberUtil = null;
 
     public static boolean isPhoneCorrectFormat(String phone, Context context) {
-        if (TextUltil.stringIsNullOrEmpty(phone) || phone.length() < 5)
+        if (TextUtil.stringIsNullOrEmpty(phone) || phone.length() < 5)
             return false;
 
         if (phoneNumberUtil == null)

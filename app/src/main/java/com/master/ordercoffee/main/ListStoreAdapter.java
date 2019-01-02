@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.master.ordercoffee.R;
 import com.master.ordercoffee.model.Store;
 import com.master.ordercoffee.service.DataChangeListener;
-import com.master.ordercoffee.utils.TextUltil;
+import com.master.ordercoffee.utils.TextUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -58,10 +58,10 @@ public class ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.Stor
 //        }
         final Store store = mListData.get(i);
         if (store != null) {
-            if (!TextUltil.stringIsNullOrEmpty(store.name)) {
+            if (!TextUtil.stringIsNullOrEmpty(store.name)) {
                 storeViewHolder.mName.setText(store.name);
             }
-            if (!TextUltil.stringIsNullOrEmpty(store.image)) {
+            if (!TextUtil.stringIsNullOrEmpty(store.image)) {
                 Picasso.get().load(store.image).error(R.drawable.ic_shop_store).into(storeViewHolder.mImageStore);
             }
         }

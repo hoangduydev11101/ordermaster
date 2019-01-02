@@ -15,14 +15,14 @@ public class MoneyUtil {
     }
 
     public static long getMoney(String target) {
-        if (TextUltil.stringIsNullOrEmpty(target))
+        if (TextUtil.stringIsNullOrEmpty(target))
             return 0;
 
         Pattern pattern = Pattern.compile("[^0-9]");
         Matcher matcher = pattern.matcher(target);
         String number = matcher.replaceAll("");
 
-        return TextUltil.stringIsNullOrEmpty(number) ? 0 : Long.parseLong(number);
+        return TextUtil.stringIsNullOrEmpty(number) ? 0 : Long.parseLong(number);
     }
 
 }
