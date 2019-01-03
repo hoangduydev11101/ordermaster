@@ -39,7 +39,7 @@ public class Constants {
         public static final int REQUEST_PERMISSION_CAMERA = 577;
         public static final int REQUEST_PERMISSION_WRITE = 578;
         public static final int REQUEST_TRANSFER_CASH = 579;
-        public static final int REQUEST_CHOOSE_IMAGE_CAR = 580;
+        public static final int REQUEST_CHOOSE_IMAGE_STORE = 580;
         public static final int REQUEST_INVITE = 581;
     }
 

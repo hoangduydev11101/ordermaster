@@ -84,4 +84,16 @@ public class MainViewModel {
         UserService.clearCurrentUser(mContext);
         FirebaseAuth.getInstance().signOut();
     }
+
+    public void getMyStore(DataChangeListener<Store> listener) {
+        FirebaseService.getInstance().getListMyStore(new DataChangeListener<Store>() {
+            @Override
+            public void onListDataSuccess(List<Store> listData) {
+                super.onListDataSuccess(listData);
+                if (listData != null && listData.size() != 0) {
+                    listener.onListDataSuccess(listData);
+                }
+            }
+        });
+    }
 }

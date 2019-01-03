@@ -1,5 +1,6 @@
 package com.master.ordercoffee.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -12,9 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.master.ordercoffee.R;
+import com.master.ordercoffee.service.FragmentService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class Toolbar extends RelativeLayout {
 
@@ -33,6 +36,11 @@ public class Toolbar extends RelativeLayout {
     ImageView mIconAction;
     @BindView(R.id.tv_lable)
     TextView mLable;
+
+    @OnClick(R.id.img_close)
+    void closeViewlicked() {
+        ((Activity)mContext).onBackPressed();
+    }
 
     public Toolbar(Context context) {
         super(context);
@@ -73,8 +81,8 @@ public class Toolbar extends RelativeLayout {
     private void initView(Context context) {
         mContext = context;
         View view = inflate(mContext, R.layout.view_custom_toolbar, null);
-        addView(view, new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        ButterKnife.bind(this, view);
+        addView(view, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        ButterKnife.bind(this);
 
         initData();
     }
@@ -87,7 +95,7 @@ public class Toolbar extends RelativeLayout {
             mIconAction.setVisibility(VISIBLE);
             mIconAction.setImageDrawable(mTbIconAction);
         }
-        if (TextUtil.stringIsNullOrEmpty(mTbLable)) {
+        if (!TextUtil.stringIsNullOrEmpty(mTbLable)) {
             mLable.setText(mTbLable);
         }
     }

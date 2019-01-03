@@ -2,11 +2,19 @@ package com.master.ordercoffee.service;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -20,7 +28,12 @@ import com.master.ordercoffee.utils.TimeUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class FirebaseService {
 
@@ -101,6 +114,27 @@ public class FirebaseService {
         });
     }
 
+    public void getUserFromPhone(String phone, DataChangeListener<User> listener) {
+        Query query = mDatabase.collection("Users").whereEqualTo("phone", phone);
+        query.get().addOnCompleteListener(task -> {
+            if (task != null && task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    User user = document.toObject(User.class);
+                    if (user != null && !TextUtil.stringIsNullOrEmpty(user.id)) {
+                        listener.onDataSuccess(user);
+                        return;
+                    }
+                }
+            } else {
+                listener.onDataFailed(task.getException());
+            }
+        });
+    }
+
+    public String getFirebaseId() {
+        return FirebaseAuth.getInstance().getUid();
+    }
+
     public void uploadImages(Bitmap bitmap, String path, final FirebaseStorageListener callback) {
         mStorage = FirebaseStorage.getInstance();
 
@@ -136,6 +170,43 @@ public class FirebaseService {
                 listener.onDataFailed(task.getException());
             }
         });
+    }
+
+    public void createStore(Store store, DataChangeListener<Boolean> listener) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("ownerId", store.ownerId);
+        data.put("name", store.name);
+        data.put("created", TimeUtil.currentTimeStamp());
+        data.put("image", store.image);
+        data.put("introduce", store.introduce);
+        mDatabase.collection("Stores").add(data).addOnSuccessListener(documentReference -> {
+            if (documentReference != null) {
+                String id = documentReference.getId();
+                documentReference.update("id", id).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        listener.onDataSuccess(true);
+                    }
+                });
+            }
+        });
+    }
+
+    public void getListMyStore (DataChangeListener<Store> listener) {
+        Query query = mDatabase.collection("Stores").whereEqualTo("ownerId", getFirebaseId());
+                query.get()
+                .addOnCompleteListener(task -> {
+                    if (task != null && task.isSuccessful()) {
+                        List<Store> list = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Store store = document.toObject(Store.class);
+                            if (store != null)
+                                list.add(store);
+                        }
+                        listener.onListDataSuccess(list);
+                    } else {
+                        listener.onDataFailed(task.getException());
+                    }
+                });
     }
 
     public interface FirebaseStorageListener {

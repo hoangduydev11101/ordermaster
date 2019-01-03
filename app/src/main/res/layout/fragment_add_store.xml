@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingConstraints"
-    android:background="@color/colorWhite"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:ignore="MissingConstraints">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -29,7 +28,7 @@
             android:padding="16dp">
 
             <EditText
-                android:id="@+id/edt_name"
+                android:id="@+id/edt_name_store"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_text_field"
@@ -41,8 +40,7 @@
                 android:textColor="@color/colorTextGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="16dp"
-                tools:ignore="MissingConstraints" />
+                tools:layout_editor_absoluteY="16dp" />
 
             <ImageView
                 android:id="@+id/img_store"
@@ -55,7 +53,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_name"
+                app:layout_constraintTop_toBottomOf="@+id/edt_name_store"
                 app:srcCompat="@drawable/ic_shop_store" />
 
             <View
@@ -65,10 +63,9 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/colorTextGray"
                 app:layout_constraintTop_toBottomOf="@+id/img_store"
-                tools:layout_editor_absoluteX="16dp"/>
+                tools:layout_editor_absoluteX="16dp" />
 
             <TextView
-                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:id="@+id/tv_add"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -76,6 +73,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_primary"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingTop="8dp"

@@ -10,6 +10,7 @@ public class Store implements Parcelable {
     public String name;
     public String image;
     public String introduce;
+    public long created;
 
     public Store() {
     }
@@ -20,6 +21,7 @@ public class Store implements Parcelable {
         name = in.readString();
         image = in.readString();
         introduce = in.readString();
+        created = in.readLong();
     }
 
     public static final Creator<Store> CREATOR = new Creator<Store>() {
@@ -46,5 +48,6 @@ public class Store implements Parcelable {
         dest.writeString(name);
         dest.writeString(image);
         dest.writeString(introduce);
+        dest.writeLong(created);
     }
 }
